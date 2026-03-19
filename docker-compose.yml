@@ -13,6 +13,7 @@ services:
 
   db:
     image: postgres
+    resrart: always
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: example
@@ -33,6 +34,7 @@ services:
      - "6379:6379"
   backend:
     build: ./app
+    restart: always
     ports:
       - "5000:5000"
     environment:
