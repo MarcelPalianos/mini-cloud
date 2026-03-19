@@ -1,23 +1,24 @@
-name: Mini DevOps Pipeline
+name: Mini Cloud CI
 
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
-  first-job:
+  docker-checks:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show current files
-        run: ls -la
+      - name: Show Docker version
+        run: docker --version
 
-      - name: Show working directory
-        run: pwd
+      - name: Validate Docker Compose config
+        run: docker compose config
 
-      - name: Print message
-        run: echo "Pipeline is working successfully"
+      - name: Build backend image
+        run: docker compose build backend
