@@ -13,7 +13,7 @@ def get_db_connection():
     )
 
 @app.route("/health")
-def health():
+def health("i am messing with you"):
 	return "OK", 200
 
 @app.route("/")
