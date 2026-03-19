@@ -11,6 +11,7 @@ def get_db_connection():
         user=os.getenv("DB_USER", "myuser"),
         password=os.getenv("DB_PASSWORD", "example")
     )
+    return "Mini Cloud v2 - deploy from Docker Hub"
 
 @app.route("/")
 def home():
