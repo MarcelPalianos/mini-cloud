@@ -13,7 +13,7 @@ def get_db_connection():
     )
 
 @app.route("/health")
-def health("i am messing with you"):
+def health():
 	return "OK", 200
 
 @app.route("/")
@@ -23,7 +23,7 @@ def home():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT 'Mini Cloud v5 - deploy from Docker Hub'")
+        cur.execute("SELECT 'Mini Cloud v6 - deploy from Docker Hub'")
         result = cur.fetchone()[0]
         cur.close()
         conn.close()
