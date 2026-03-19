@@ -15,6 +15,8 @@ def get_db_connection():
 @app.route("/health")
 def health():
 	return "OK", 200
+
+@app.route("/")
 def home():
     commit_sha = os.getenv("COMMIT_SHA", "unknown")
 
