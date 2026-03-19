@@ -34,7 +34,7 @@ services:
   redis:
    image: redis
   backend:
-    build: ./app
+    image: marcelpalianos/mini-cloud-backend:latest    
     restart: always
     environment:
       DB_HOST: db
