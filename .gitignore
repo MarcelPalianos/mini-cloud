@@ -1,15 +1,5 @@
-# Python
+.env
 __pycache__/
 *.pyc
-
-# Environment
-.env
-
-# Docker
-*.log
-
-# OS
-.DS_Store
-
-# VS Code
+node_modules/
 .vscode/
