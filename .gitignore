@@ -13,3 +13,6 @@ __pycache__/
 
 # VS Code
 .vscode/
+
+#Action Runner
+action-runner/
