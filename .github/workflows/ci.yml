@@ -4,24 +4,20 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
-  docker-checks:
+  docker-build-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show Docker version
-        run: docker --version
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Validate Docker Compose config
-        run: docker compose config
+      - name: Build image
+        run: docker build -t marcelpalianos/mini-cloud-backend:latest ./app
 
-      - name: Build backend image
-        run: docker build -t mini-cloud-backend ./app
-
-      - name: Simulate deploy
-        run: echo "Deployment would happen here"
+      - name: Push image
+        run: docker push marcelpalianos/mini-cloud-backend:latest
