@@ -1,5 +1,4 @@
--name: Build backend image
- run: docker build -t mini-cloud-backend ./app
+name: Mini Cloud CI
 
 on:
   push:
@@ -22,7 +21,7 @@ jobs:
         run: docker compose config
 
       - name: Build backend image
-        run: docker compose build backend
-      
+        run: docker build -t mini-cloud-backend ./app
+
       - name: Simulate deploy
         run: echo "Deployment would happen here"
