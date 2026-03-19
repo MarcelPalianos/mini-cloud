@@ -1,12 +1,9 @@
 #!/bin/bash
 
-echo "Pulling latest code..."
-git pull
+echo "Pulling latest backend image..."
+docker compose pull backend
 
-echo "Rebuilding containers..."
-docker compose build
-
-echo "Restarting services..."
+echo "Updating containers..."
 docker compose up -d
 
 echo "Cleaning unused images..."
