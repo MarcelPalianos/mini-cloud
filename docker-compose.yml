@@ -32,7 +32,8 @@ services:
       - "3000:3000"
 
   redis:
-   image: redis
+    image: redis
+
   backend:
     image: marcelpalianos/mini-cloud-backend:latest    
     restart: always
@@ -45,7 +46,7 @@ services:
     depends_on:
       - db
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
       interval: 10s
       timeout: 5s
       retries: 5

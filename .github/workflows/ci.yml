@@ -12,14 +12,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
+      - name: Check Python syntax
+        run: python -m py_compile app/app.py
 
       - name: Set image tag
         run: echo "SHA_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-      - name: Check Python syntax
-        run: python -m py_compile app/app.py
+
       - name: Build Docker image
         run: |
           docker build \
