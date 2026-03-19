@@ -18,7 +18,7 @@ def home():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT 'Hello from Postgres through Flask!'")
+        cur.execute("SELECT 'Mini Cloud v3 - deploy from Docker Hub'")
         result = cur.fetchone()[0]
         cur.close()
         conn.close()
