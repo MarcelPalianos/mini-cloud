@@ -15,4 +15,4 @@ __pycache__/
 .vscode/
 
 #Action Runner
-action-runner/
+actions-runner/

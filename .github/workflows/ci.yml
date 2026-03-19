@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Check Python syntax
         run: python -m py_compile app/app.py
 
@@ -33,3 +33,13 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mini-cloud-backend:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mini-cloud-backend:${{ env.SHA_TAG }}
+
+  auto-deploy:
+    needs: docker-build-push
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy on local runner
+        run: |
+          cd ~/mini-cloud
+          ./deploy.sh
