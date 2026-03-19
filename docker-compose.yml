@@ -16,11 +16,11 @@ services:
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: example
-      POSTGRES_ DB: mydb
+      POSTGRES_DB: mydb
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/
+      - postgres_data:/var/lib/postgresql/data
 
   grafana:
     image: grafana/grafana
