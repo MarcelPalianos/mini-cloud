@@ -1,5 +1,5 @@
-name: Build backend image
-run: docker build -t mini-cloud-backend ./app
+-name: Build backend image
+ run: docker build -t mini-cloud-backend ./app
 
 on:
   push:
