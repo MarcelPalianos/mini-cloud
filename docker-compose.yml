@@ -41,6 +41,7 @@ services:
       DB_NAME: mydb
       DB_USER: myuser
       DB_PASSWORD: example
+      COMMIT_SHA: ${COMMIT_SHA:-local}
     depends_on:
       - db
     healthcheck:

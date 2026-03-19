@@ -11,8 +11,11 @@ def get_db_connection():
         user=os.getenv("DB_USER", "myuser"),
         password=os.getenv("DB_PASSWORD", "example")
     )
+
 @app.route("/")
 def home():
+    commit_sha = os.getenv("COMMIT_SHA", "unknown")
+
     try:
         conn = get_db_connection()
         cur = conn.cursor()
@@ -20,9 +23,9 @@ def home():
         result = cur.fetchone()[0]
         cur.close()
         conn.close()
-        return result
+        return f"{result} - commit {commit_sha}"
     except Exception as e:
-        return f"Database connection failed: {e}", 500
+        return f"Database connection failed - commit {commit_sha} - error: {e}", 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
