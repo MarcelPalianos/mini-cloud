@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from prometheus_client import Counter, generate_latest
 import psycopg2
 import os
 
@@ -27,6 +28,7 @@ def init_db():
 
 init_db()
 
+REQUEST_COUNT = Counter('app_requests_total', 'Total requests', ['endpoint'])
 
 @app.route("/health")
 def health():
@@ -49,10 +51,11 @@ def home():
 
 @app.route("/api/message")
 def api_message():
-     commit_sha = os.getenv("COMMIT_SHA", "unknown")
-     return jsonify({
-          "message": "Hello from Flask API",
-          "commit": commit_sha
+    REQUEST_COUNT.labels(endpoint='/api/message').inc()
+    ommit_sha = os.getenv("COMMIT_SHA", "unknown")
+    return jsonify({
+        "message": "Hello from Flask API",
+        "commit": commit_sha
      })
 
 @app.route("/api/add", methods=["POST"])
@@ -82,6 +85,10 @@ def get_messages():
         {"id": row[0], "text": row[1]}
         for row in rows
     ])
+@app.route("/metrics")
+def metrics():
+    return generate_latest(), 200, {'Content-Type': 'text/plain'}
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
