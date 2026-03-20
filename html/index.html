@@ -22,5 +22,23 @@
         console.error(err);
       });
   </script>
+
+<input id="msg" placeholder="Enter message">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+function sendMessage() {
+  const msg = document.getElementById('msg').value;
+
+  fetch('/api/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg })
+  })
+  .then(() => alert("Saved!"))
+  .catch(() => alert("Error"));
+}
+</script>
+
 </body>
 </html>

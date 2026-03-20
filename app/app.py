@@ -1,8 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import psycopg2
 import os
 
 app = Flask(__name__)
+
+init_db()
+
 
 def get_db_connection():
     return psycopg2.connect(
@@ -38,6 +41,33 @@ def api_message():
           "message": "Hello from Flask API",
           "commit": commit_sha
      })
+
+@app.route("/api/add", methods=["POST"])
+def add_message():
+    data = request.get_json()
+    message = data.get("message", "")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO messages (text) VALUES (%s)", (message,))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({"status": "ok"})
+
+def init_db():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS messages (
+            id SERIAL PRIMARY KEY,
+            text TEXT
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
