@@ -36,6 +36,7 @@ def health():
 
 @app.route("/")
 def home():
+    REQUEST_COUNT.labels(endpoint='/').inc()
     commit_sha = os.getenv("COMMIT_SHA", "unknown")
 
     try:
@@ -60,6 +61,7 @@ def api_message():
 
 @app.route("/api/add", methods=["POST"])
 def add_message():
+    REQUEST_COUNT.labels(endpoint='/api/add').inc()
     data = request.get_json()
     message = data.get("message", "")
 
@@ -74,6 +76,7 @@ def add_message():
 
 @app.route("/api/messages")
 def get_messages():
+    REQUEST_COUNT.labels(endpoint='/api/messages').inc()
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT id, text FROM messages ORDER BY id DESC")
