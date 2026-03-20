@@ -9,18 +9,18 @@
   <h1>Mini Cloud Frontend</h1>
   <p id="status">Loading message from back end...</p>
 
-<script>
-  fetch('/api/message')
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('status').innerText =
-    $data.message + "commit" + $data.commit;
-  })
-  .catch(err => {
-    document.getElementById('status').innerText =
-    "Failed to load backend message";
-  });
-</script>
-
+  <script>
+    fetch('/api/message')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('status').innerText =
+          data.message + " - commit " + data.commit;
+      })
+      .catch(err => {
+        document.getElementById('status').innerText =
+          "Failed to load backend message";
+        console.error(err);
+      });
+  </script>
 </body>
 </html>
