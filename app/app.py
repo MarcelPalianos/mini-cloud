@@ -23,7 +23,7 @@ def home():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT 'Mini Cloud v6 - deploy from Docker Hub'")
+        cur.execute("SELECT 'Mini Cloud v7 - deploy from Docker Hub'")
         result = cur.fetchone()[0]
         cur.close()
         conn.close()
