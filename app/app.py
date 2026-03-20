@@ -78,7 +78,10 @@ def get_messages():
     cur.close()
     conn.close()
 
-    return jsonify([r[0] for r in rows])
+    return jsonify([
+        {"id": row[0], "text": row[1]}
+        for row in rows
+    ])
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

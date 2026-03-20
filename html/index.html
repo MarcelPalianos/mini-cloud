@@ -64,5 +64,46 @@ function loadMessages() {
 loadMessages();
 </script>
 
+<h2>Saved messages</h2>
+<ul id="messages"></ul>
+
+<script>
+function loadMessages() {
+  fetch('/api/messages')
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById('messages');
+      list.innerHTML = '';
+
+      data.forEach(item => {
+        const li = document.createElement('li');
+        li.innerText = item.text;
+        list.appendChild(li);
+      });
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+function sendMessage() {
+  const msg = document.getElementById('msg').value;
+
+  fetch('/api/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg })
+  })
+  .then(() => {
+    alert("Saved!");
+    document.getElementById('msg').value = '';
+    loadMessages();
+  })
+  .catch(() => alert("Error"));
+}
+
+loadMessages();
+</script>
+
 </body>
 </html>
