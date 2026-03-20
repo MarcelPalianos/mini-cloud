@@ -73,7 +73,7 @@ def add_message():
 def get_messages():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT text FROM messages ORDER BY id DESC")
+    cur.execute("SELECT id, text FROM messages ORDER BY id DESC")
     rows = cur.fetchall()
     cur.close()
     conn.close()
