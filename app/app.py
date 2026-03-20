@@ -52,7 +52,7 @@ def home():
 @app.route("/api/message")
 def api_message():
     REQUEST_COUNT.labels(endpoint='/api/message').inc()
-    ommit_sha = os.getenv("COMMIT_SHA", "unknown")
+    commit_sha = os.getenv("COMMIT_SHA", "unknown")
     return jsonify({
         "message": "Hello from Flask API",
         "commit": commit_sha
