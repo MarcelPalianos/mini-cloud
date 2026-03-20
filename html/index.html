@@ -7,103 +7,67 @@
 </head>
 <body>
   <h1>Mini Cloud Frontend</h1>
+
   <p id="status">Loading message from back end...</p>
 
+  <input id="msg" placeholder="Enter message">
+  <button onclick="sendMessage()">Send</button>
+
+  <h2>Saved messages</h2>
+  <ul id="messages"></ul>
+
   <script>
-    fetch('/api/message')
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('status').innerText =
-          data.message + " - commit " + data.commit;
+    function loadStatus() {
+      fetch('/api/message')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('status').innerText =
+            data.message + " - commit " + data.commit;
+        })
+        .catch(err => {
+          document.getElementById('status').innerText =
+            "Failed to load backend message";
+          console.error(err);
+        });
+    }
+
+    function loadMessages() {
+      fetch('/api/messages')
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById('messages');
+          list.innerHTML = '';
+
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = item.text;
+            list.appendChild(li);
+          });
+        })
+        .catch(err => {
+          console.error('Failed to load messages:', err);
+        });
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById('msg').value;
+
+      fetch('/api/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
       })
-      .catch(err => {
-        document.getElementById('status').innerText =
-          "Failed to load backend message";
-        console.error(err);
-      });
-  </script>
+        .then(response => response.json())
+        .then(() => {
+          alert("Saved!");
+          document.getElementById('msg').value = '';
+          loadMessages();
+        })
+        .catch(() => alert("Error"));
+    }
 
-<input id="msg" placeholder="Enter message">
-<button onclick="sendMessage()">Send</button>
-
-<script>
-function sendMessage() {
-  const msg = document.getElementById('msg').value;
-
-  fetch('/api/add', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: msg })
-  })
-  .then(() => {
-    alert("Saved!");
-    loadMessages(); // 🔥 refresh list after saving
-  })
-  .catch(() => alert("Error"));
-}
-</script>
-
-<ul id="messages"></ul>
-
-<script>
-function loadMessages() {
-  fetch('/api/messages')
-    .then(res => res.json())
-    .then(data => {
-      const list = document.getElementById('messages');
-      list.innerHTML = '';
-      data.forEach(msg => {
-        const li = document.createElement('li');
-        li.innerText = msg;
-        list.appendChild(li);
-      });
-    });
-}
-
-// load on page start
-loadMessages();
-</script>
-
-<h2>Saved messages</h2>
-<ul id="messages"></ul>
-
-<script>
-function loadMessages() {
-  fetch('/api/messages')
-    .then(res => res.json())
-    .then(data => {
-      const list = document.getElementById('messages');
-      list.innerHTML = '';
-
-      data.forEach(item => {
-        const li = document.createElement('li');
-        li.innerText = item.text;
-        list.appendChild(li);
-      });
-    })
-    .catch(err => {
-      console.error(err);
-    });
-}
-
-function sendMessage() {
-  const msg = document.getElementById('msg').value;
-
-  fetch('/api/add', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: msg })
-  })
-  .then(() => {
-    alert("Saved!");
-    document.getElementById('msg').value = '';
+    loadStatus();
     loadMessages();
-  })
-  .catch(() => alert("Error"));
-}
-
-loadMessages();
-</script>
-
+  </script>
 </body>
 </html>
