@@ -4,9 +4,6 @@ import os
 
 app = Flask(__name__)
 
-init_db()
-
-
 def get_db_connection():
     return psycopg2.connect(
         host=os.getenv("DB_HOST", "db"),
@@ -14,6 +11,22 @@ def get_db_connection():
         user=os.getenv("DB_USER", "myuser"),
         password=os.getenv("DB_PASSWORD", "example")
     )
+
+def init_db():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS messages (
+            id SERIAL PRIMARY KEY,
+            text TEXT
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+init_db()
+
 
 @app.route("/health")
 def health():
@@ -55,19 +68,6 @@ def add_message():
     conn.close()
 
     return jsonify({"status": "ok"})
-
-def init_db():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS messages (
-            id SERIAL PRIMARY KEY,
-            text TEXT
-        );
-    """)
-    conn.commit()
-    cur.close()
-    conn.close()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
