@@ -6,8 +6,22 @@
   <title>Mini Cloud</title>
 </head>
 <body>
-  <h1>My first Docker-served page</h1>
-  <p>Nginx is serving this from a mounted folder.</p>
-  <p>Marcel's mini-cloud is alive.</p>
+  <h1>MMini Cloud Frontend</h1>
+  <p id="status">Loading message from back end...</p>
+
+<script>
+  fetch('/api/message')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('status').textContent =
+    '${data.message} - commit ${data.commit}';
+  })
+  .catch(error => {
+    document.getElementById('status').textContent =
+    'Failed to load backend message';
+    console.error(error);
+  });
+</script>
+
 </body>
 </html>

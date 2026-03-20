@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import psycopg2
 import os
 
@@ -30,6 +30,14 @@ def home():
         return f"{result} - commit {commit_sha}"
     except Exception as e:
         return f"Database connection failed - commit {commit_sha} - error: {e}", 500
+
+@app.route("/api/message")
+def api_message():
+     commit_sha = os.getenv("COMMIT_SHA", "unknown")
+     return jsonify({
+          "message": "Hello from Flask API",
+          "commit": commit_sha
+     })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
