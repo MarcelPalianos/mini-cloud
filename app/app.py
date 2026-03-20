@@ -23,7 +23,7 @@ def home():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT 'Mini Cloud v8 - Final deploy script + frontend connection'")
+        cur.execute("SELECT 'Mini Cloud v9- Final deploy script + frontend connection + rebuild web and backend'")
         result = cur.fetchone()[0]
         cur.close()
         conn.close()

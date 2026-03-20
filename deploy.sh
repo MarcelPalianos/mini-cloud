@@ -13,10 +13,7 @@ done
 echo "Getting latest commit SHA..."
 export COMMIT_SHA=$(git rev-parse --short HEAD)
 
-echo "Recreating backend container..."
-docker compose up -d --force-recreate backend
-
-echo "Recreating web"
+echo "Recreating backend and web containers..."
 docker compose up -d --force-recreate backend web
 
 echo "Cleaning unused images..."
