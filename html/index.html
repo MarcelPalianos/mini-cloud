@@ -35,9 +35,33 @@ function sendMessage() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: msg })
   })
-  .then(() => alert("Saved!"))
+  .then(() => {
+    alert("Saved!");
+    loadMessages(); // 🔥 refresh list after saving
+  })
   .catch(() => alert("Error"));
 }
+</script>
+
+<ul id="messages"></ul>
+
+<script>
+function loadMessages() {
+  fetch('/api/messages')
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById('messages');
+      list.innerHTML = '';
+      data.forEach(msg => {
+        const li = document.createElement('li');
+        li.innerText = msg;
+        list.appendChild(li);
+      });
+    });
+}
+
+// load on page start
+loadMessages();
 </script>
 
 </body>

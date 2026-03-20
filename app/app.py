@@ -69,5 +69,16 @@ def add_message():
 
     return jsonify({"status": "ok"})
 
+@app.route("/api/messages")
+def get_messages():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT text FROM messages ORDER BY id DESC")
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    return jsonify([r[0] for r in rows])
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
