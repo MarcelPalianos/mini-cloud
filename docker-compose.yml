@@ -43,6 +43,9 @@ services:
     image: redis
 
   backend:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
     image: marcelpalianos/mini-cloud-backend:latest    
     restart: always
     environment:
